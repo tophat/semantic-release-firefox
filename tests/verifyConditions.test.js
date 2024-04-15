@@ -13,6 +13,16 @@ describe('verifyConditions', () => {
     const targetXpi = 'target-extension.xpi'
 
     beforeEach(() => {
+        vol.reset()
+        vol.fromJSON({
+            'dist/manifest.json': `{
+    "browser_specific_settings": {
+        "gecko": {
+            "id": "${extensionId}"
+        }
+    }
+}`,
+        })
         firefoxApiKeySpy.mockValueOnce('some-api-key')
         firefoxSecretKeySpy.mockValueOnce('shh-its-a-secret')
     })
@@ -37,26 +47,39 @@ describe('verifyConditions', () => {
         )
     })
 
-    it('fails if extensionId is missing from options', () => {
+    it('fails if extensionId is missing from options and from manifest.json', () => {
+        vol.reset()
+        vol.fromJSON({
+            'dist/manifest.json': `{
+    "browser_specific_settings": {
+        "gecko": {
+        }
+    }
+}`,
+        })
         expect(() => verifyConditions({ targetXpi })).toThrow(
-            'extensionId is missing',
+            'extension ID must be set',
+        )
+    })
+
+    it('fails if extensionId is set from both options and from manifest.json', () => {
+        expect(() => verifyConditions({ extensionId, targetXpi })).toThrow(
+            'extension ID can only be set by either',
         )
     })
 
     it('fails if targetXpi is missing from options', () => {
-        expect(() => verifyConditions({ extensionId })).toThrow(
-            'targetXpi is missing',
-        )
+        expect(() => verifyConditions({})).toThrow('targetXpi is missing')
     })
 
     it('fails if manifest.json file does not exist', () => {
-        expect(() => verifyConditions({ extensionId, targetXpi })).toThrow(
+        vol.reset()
+        expect(() => verifyConditions({ targetXpi })).toThrow(
             'manifest.json was not found',
         )
     })
 
     it('succeeds if all conditions are met', () => {
-        vol.fromJSON({ 'dist/manifest.json': '{}' })
-        expect(() => verifyConditions({ extensionId, targetXpi })).not.toThrow()
+        expect(() => verifyConditions({ targetXpi })).not.toThrow()
     })
 })
