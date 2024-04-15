@@ -48,12 +48,6 @@ describe('publish', () => {
         jest.restoreAllMocks()
     })
 
-    it('fails if extensionId is not given', () => {
-        return expect(publish(mockOptions)).rejects.toThrow(
-            'extensionId is missing',
-        )
-    })
-
     it('fails if targetXpi is not given', () => {
         return expect(publish(mockOptions)).rejects.toThrow(
             'targetXpi is missing',

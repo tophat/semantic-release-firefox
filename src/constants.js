@@ -11,8 +11,6 @@ const defaultOptions = {
 }
 
 const requiredOptions = {
-    extensionId:
-        'Omitting this would create a new extension instead of a new version.',
     targetXpi:
         'Omitting this would leave the xpi file unnamed when it is returned from mozilla.',
 }

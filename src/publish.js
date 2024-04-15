@@ -35,17 +35,19 @@ const publish = async (options) => {
         return result
     }
 
-    const { downloadedFiles } = await webExt.cmd.sign(
-        {
-            apiKey: FIREFOX_API_KEY,
-            apiSecret: FIREFOX_SECRET_KEY,
-            artifactsDir,
-            channel,
-            id: extensionId,
-            sourceDir,
-        },
-        { signAddon },
-    )
+    const signArgs = {
+        apiKey: FIREFOX_API_KEY,
+        apiSecret: FIREFOX_SECRET_KEY,
+        artifactsDir,
+        channel,
+        sourceDir,
+    }
+
+    if (extensionId) {
+        signArgs.id = extensionId
+    }
+
+    const { downloadedFiles } = await webExt.cmd.sign(signArgs, { signAddon })
     const [xpiFile] = downloadedFiles
     fs.renameSync(xpiFile, path.join(artifactsDir, targetXpi))
 }

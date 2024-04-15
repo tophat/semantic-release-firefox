@@ -51,9 +51,10 @@ For more information on the source of these values, see [Mozilla Add On authenti
 
 #### `verifyConditions` parameters
 
-- `extensionId`: **REQUIRED** The extension id of the extension from the Mozilla Add On store. If this is not specified then a new extension will be created each time the release is run. In order to avoid issues arising due to this, the extension must be created in the Add On store first and the extension Id put into the semantic release configuration.
 
 - `targetXpi`: **REQUIRED** The filename of the XPI file to store in the artifacts directory.
+
+- `extensionId`: The extension id of the extension from the Mozilla Add On store. Must either be set in `manifest.json` or provided here. If this is not specified then a new extension will be created each time the release is run. In order to avoid issues arising due to this, the extension must be created in the Add On store first and the extension Id put into the semantic release configuration.
 
 - `sourceDir`: The path of the source directory. Defaults to `dist`.
 
@@ -77,9 +78,10 @@ Creates an unsigned XPI file out of the source directory and uploads it to the M
 
 #### `publish` parameters
 
-- `extensionId`: **REQUIRED** The extension id of the extension from the Mozilla Add On store.
 
 - `targetXpi`: **REQUIRED** The filename of the XPI file to store in the artifacts directory.
+
+- `extensionId`: The extension id of the extension from the Mozilla Add On store.
 
 - `sourceDir`: The path of the source directory. Defaults to `dist`.
 
